@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PatchworkComic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .menu {
+            width: 200px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu li {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .menu li:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .grid-container {
+            display: grid;
+            gap: 10px;
+            width: 80%;
+            height: 80%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid-item {
+            position: relative;
+            border: 2px solid #000;
+            overflow: hidden;
+            height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .grid-item:hover {
+            transform: scale(1.01);
+            transition: transform 0.5s;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .grid-item .text-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .foot {
+            margin: 5px;
+            position: absolute;
+            right: 0;
+            bottom:0;
+        }
+        #date {
+            position: absolute;
+        }
+        .foot a {
+            color: #000;
+            text-decoration: none;
+            target: "_blank";
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <ul id="bd-list"></ul>
+</div>
+<div class="content">
+    <div class="grid-container" id="bd-container"></div>
+</div>
+<div class="foot">
+    <a href="https://github.com/OlivierCavadenti">Made by Olivier Cavadenti</a>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const bdList = document.getElementById('bd-list');
+        const bdContainer = document.getElementById('bd-container');
+        let bds = [
+            {
+                "title": "1 - The Dream",
+                "date": "2024-06-08",
+                "cases": [
+                    {"top": "25", "sourceUrl": "https://gatecrashers.fan/2022/11/30/review-doctor-stranger-fall-sunrise/", "url": "https://i0.wp.com/gatecrashers.fan/wp-content/uploads/2022/11/439CD823-D900-4FEA-8029-748607EDF1EC.png?fit=1200%2C675&ssl=1"},
+                    {"sourceUrl" : "https://www.biographie-peintre-analyse.com/2014/05/15/philippe-druillet-arts-graphiques-bd-xxe-et-xxie/", "text": "- Who are you ?","url": "https://www.radiofrance.fr/s3/cruiser-production/2016/11/cd82fcec-e2b2-4885-a0b5-8fce36cfcfa8/1200x680_invitation-presse-druillet-1.jpg"},
+                    {"top": "25", "sourceUrl": "https://www.deviantart.com/skrumpgoblin/art/5-Pace-Man-761067719", "text": "- A dream, just a dream of a human.", "url": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6ef8ed25-7663-4185-8be3-e76363616656/dcl4blz-9648b391-ecc5-4ab8-9d4b-ef42510aab20.png/v1/fit/w_828,h_1356,q_70,strp/5_pace_man_by_skrumpgoblin_dcl4blz-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTU0NCIsInBhdGgiOiJcL2ZcLzZlZjhlZDI1LTc2NjMtNDE4NS04YmUzLWU3NjM2MzYxNjY1NlwvZGNsNGJsei05NjQ4YjM5MS1lY2M1LTRhYjgtOWQ0Yi1lZjQyNTEwYWFiMjAucG5nIiwid2lkdGgiOiI8PTk0MyJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.lO0AuNxseWZYGyGg7HxYDCqSebgP6wzVNhvLsV2jfL8"},
+                    {"sourceUrl": "https://www.artstation.com/artwork/1bgbZ","url": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f7394b56-17ff-4dec-b1b0-526df965ff6c/d9q8fg4-b56b8dda-6c83-4ff0-a4d0-d0a3fe10abad.jpg/v1/fill/w_1264,h_632,q_70,strp/red_by_florentllamas_d9q8fg4-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjQwIiwicGF0aCI6IlwvZlwvZjczOTRiNTYtMTdmZi00ZGVjLWIxYjAtNTI2ZGY5NjVmZjZjXC9kOXE4Zmc0LWI1NmI4ZGRhLTZjODMtNGZmMC1hNGQwLWQwYTNmZTEwYWJhZC5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.G32jCl5_A9dzNisWL3iB66L24a2hdS07a_hMLWY3x2o"},
+                    {"sourceUrl": "https://www.deviantart.com/eddie-mendoza/art/Red-Planet-506334194", "text": "- Now, everything is a dream", "url": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/0c6e0590-011b-4912-bfe4-9353b6e5dc98/d8dghyq-aa5a025c-fd0c-4d24-b8d9-3fa1c3dcb9bf.jpg/v1/fill/w_1377,h_580,q_70,strp/red_planet_by_eddie_mendoza_d8dghyq-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9Njc1IiwicGF0aCI6IlwvZlwvMGM2ZTA1OTAtMDExYi00OTEyLWJmZTQtOTM1M2I2ZTVkYzk4XC9kOGRnaHlxLWFhNWEwMjVjLWZkMGMtNGQyNC1iOGQ5LTNmYTFjM2RjYjliZi5qcGciLCJ3aWR0aCI6Ijw9MTYwMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.SvDWJvOMS8OUuiXdJqi6hJZWG_-SBMhIOq_xLFlkzcs"}
+                ]
+            }
+        ];
+
+        bds.reverse();
+        bds.forEach((bd, index) => {
+            let li = document.createElement('li');
+            li.textContent = bd.title;
+            li.addEventListener('click', () => displayBD(index));
+            bdList.appendChild(li);
+        });
+
+        function displayBD(index) {
+            bdList.querySelectorAll('li').forEach((li, i) => {
+                li.style.fontWeight = i === index ? 'bold' : 'normal';
+            });
+            bdContainer.innerHTML = '';
+            let cases = bds[index].cases;
+            let columns = cases.length < 3 ? cases.length : 3;
+            if (cases.length === 4) {
+                columns = 2;
+            }
+            bdContainer.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+
+            cases.forEach((c, i) => {
+                let gridItem = document.createElement('div');
+                gridItem.classList.add('grid-item');
+                let img = document.createElement('img');
+                img.src = c.url;
+                img.alt = c.text;
+
+                if(c.top) {
+                    img.style.objectPosition = `0% ${c.top}%`;
+                }
+
+                img.addEventListener('click', () => {
+                    if (c.sourceUrl) {
+                        window.open(c.sourceUrl, '_blank');
+                    }
+                });
+
+                if (c.text) {
+                    let overlay = document.createElement('div');
+                    overlay.classList.add('text-overlay');
+                    overlay.textContent = c.text;
+                    gridItem.appendChild(overlay);
+                }
+
+                if (cases.length === 5 && i === 0) {
+                    gridItem.style.gridColumn = 'span 2';
+                }
+                gridItem.appendChild(img);
+                bdContainer.appendChild(gridItem);
+            });
+            const date = document.getElementById('date');
+            date.textContent = bds[index].date;
+            date.style.textAlign = 'center';
+            date.style.fontWeight = 'bold';
+            date.style.width = '100%';
+        }
+
+        displayBD(0);
+    });
+</script>
+</body>
+</html>
